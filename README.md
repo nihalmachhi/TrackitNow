@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/readme-icon.png" alt="TrackitNow icon" width="112" />
+</p>
+
 # TrackitNow
 
 TrackitNow is a full-stack task and habit tracking app. Users complete tasks (fitness, learning, coding, health), and the backend turns that activity into streaks, points, badges, and a GitHub-style contribution graph. It also has a friend system with direct messaging.
