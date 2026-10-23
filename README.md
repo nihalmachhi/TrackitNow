@@ -14,6 +14,25 @@ The frontend and backend are two separate apps in one repo (`frontend/`, `backen
 
 ## How it works
 
+The React single-page app calls a FastAPI REST backend. The backend authenticates users with short-lived JWTs, stores application data in PostgreSQL, and derives progress views from task-completion sessions.
+
+```mermaid
+flowchart LR
+  A[React Router frontend] -->|REST and JWT| B[FastAPI backend]
+  B --> C[JWT validation and user lookup]
+  C --> D[(PostgreSQL via SQLAlchemy)]
+  D --> E[Tasks and per-user task status]
+  E --> F[Daily session counts]
+  F --> G[Streak and activity graph]
+  D --> H[Friends, requests, and direct messages]
+  D --> I[Badges and profile]
+  G --> A
+  H --> A
+  I --> A
+```
+
+Task status belongs to each user while the task catalog can be shared. Completing work updates the daily session record; progress and streaks are derived from those sessions. Rank and weekly goals remain placeholders, as described below.
+
 ### Auth
 
 Signup hashes the password with Argon2 and stores the user row. Signin checks the password and returns a JWT (`sub` = user id, 30 minute expiry) via the OAuth2 password flow. Every protected route depends on `get_current_user`, which decodes the token and loads the user from the database — there's no server-side session store, the token is the only state.
@@ -159,3 +178,4 @@ Runs at `http://localhost:5173`.
 ## License
 
 MIT
+
