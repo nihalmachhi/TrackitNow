@@ -21,18 +21,18 @@ The frontend and backend are two separate apps in one repo (`frontend/`, `backen
 The React single-page app calls a FastAPI REST backend. The backend authenticates users with short-lived JWTs, stores application data in PostgreSQL, and derives progress views from task-completion sessions.
 
 ```mermaid
-flowchart TD
-  A[React Router single-page app] -->|REST request with JWT| B[FastAPI backend]
-  B --> C[Validate JWT and load current user]
-  C --> D[Authorize user-owned operation]
-  D --> E[(PostgreSQL via SQLAlchemy)]
-  E --> F[Shared task catalog and per-user task status]
-  F --> G[Completion creates or updates daily session]
-  G --> H[Derive streak and activity history]
-  E --> I[Profile, badges, friends, and messages]
-  H --> J[API response to frontend]
-  I --> J
-  J --> A
+flowchart LR
+  A[React Router frontend] -->|REST and JWT| B[FastAPI backend]
+  B --> C[JWT validation and user lookup]
+  C --> D[(PostgreSQL via SQLAlchemy)]
+  D --> E[Tasks and per-user task status]
+  E --> F[Daily session counts]
+  F --> G[Streak and activity graph]
+  D --> H[Friends, requests, and direct messages]
+  D --> I[Badges and profile]
+  G --> A
+  H --> A
+  I --> A
 ```
 
 Task status belongs to each user while the task catalog can be shared. Completing work updates the daily session record; progress and streaks are derived from those sessions. Rank and weekly goals remain placeholders, as described below.
